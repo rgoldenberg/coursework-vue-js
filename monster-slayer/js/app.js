@@ -3,7 +3,8 @@ new Vue({
     data: {
         playerHealth: 100,
         monsterHealth: 100,
-        isGameRunning: false
+        isGameRunning: false,
+        turns: []
     },
     methods: {
         startGame: function() {
@@ -13,19 +14,18 @@ new Vue({
         },
         attack: function() {
             this.monsterHealth -= calculateDamage(3, 10);
-            this.processFightState(getFightState(this.monsterHealth, this.playerHealth));
-
-            this.monsterAttacks();
+            
+            this.monsterRetaliates();
         },
         specialAttack: function() {
             this.monsterHealth -= calculateDamage(10, 20);
-            this.processFightState(getFightState(this.monsterHealth, this.playerHealth));
 
-            this.monsterAttacks();
+            this.monsterRetaliates();
         },
         heal: function() {
             var healthHealed = this.playerHealth += 10;
             this.playerHealth = healthHealed > 100 ? 100 : healthHealed;
+            
             this.monsterAttacks();
         },
         giveUp: function() {
@@ -33,18 +33,25 @@ new Vue({
         },
         monsterAttacks: function() {
             this.playerHealth -= calculateDamage(5, 12);
-            this.processFightState(getFightState(this.monsterHealth, this.playerHealth));
+            this.processFightState();
         },
-        processFightState: function(state) {
+        monsterRetaliates: function() {
+            var state = this.processFightState();
             if (state === fightState.ONGOING) {
-                return;
+                this.monsterAttacks();
             }
-            var message = state === fightState.PLAYER_WON ? "You won!" : "YOU DIED.";
-            if (confirm(`${message} Start new game?`)) {
-                this.startGame();
-            } else {
-                this.isGameRunning = false;
+        },
+        processFightState: function() {
+            var state = getFightState(this.monsterHealth, this.playerHealth);
+            if (state !== fightState.ONGOING) {
+                var message = state === fightState.PLAYER_WON ? "You won!" : "YOU DIED.";
+                if (confirm(`${message} Start new game?`)) {
+                    this.startGame();
+                } else {
+                    this.isGameRunning = false;
+                }
             }
+            return state;
         }
     }
 });
