@@ -4,27 +4,48 @@ new Vue({
         playerHealth: 100,
         monsterHealth: 100,
         isGameRunning: false,
-        turns: []
+        turnLogs: []
     },
     methods: {
         startGame: function() {
             this.playerHealth = 100;
             this.monsterHealth = 100;
+            this.turnLogs = [];
             this.isGameRunning = true;
         },
         attack: function() {
-            this.monsterHealth -= calculateDamage(3, 10);
+            var dmg = calculateDamage(3, 10);
+            this.monsterHealth -= dmg;
             
+            this.turnLogs.unshift({
+                id: this.turnLogs.length,
+                isPlayer: true,
+                msg: `Player hits Monster for ${dmg}.`
+            });
+
             this.monsterRetaliates();
         },
         specialAttack: function() {
-            this.monsterHealth -= calculateDamage(10, 20);
+            var dmg = calculateDamage(10, 20);
+            this.monsterHealth -= dmg;
+
+            this.turnLogs.unshift({
+                id: this.turnLogs.length,
+                isPlayer: true,
+                msg: `Player dropkicks Monster for ${dmg}!`
+            });
 
             this.monsterRetaliates();
         },
         heal: function() {
             var healthHealed = this.playerHealth += 10;
             this.playerHealth = healthHealed > 100 ? 100 : healthHealed;
+
+            this.turnLogs.unshift({
+                id: this.turnLogs.length,
+                isPlayer: true,
+                msg: 'Player heals himself for 10.'
+            });
             
             this.monsterAttacks();
         },
@@ -32,7 +53,15 @@ new Vue({
             this.isGameRunning = false;
         },
         monsterAttacks: function() {
-            this.playerHealth -= calculateDamage(5, 12);
+            var dmg = calculateDamage(5, 12);
+            this.playerHealth -= dmg;
+
+            this.turnLogs.unshift({
+                id: this.turnLogs.length,
+                isPlayer: true,
+                msg: `Monster hits Player for ${dmg}.`
+            });
+
             this.processFightState();
         },
         monsterRetaliates: function() {

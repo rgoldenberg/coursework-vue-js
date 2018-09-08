@@ -51,11 +51,11 @@
         </div>
     </section>
 
-    <section class="row log">
+    <section class="row log" v-if="turnLogs.length">
         <div class="small-12 columns">
             <ul>
-                <li>
-
+                <li v-for="log in turnLogs">
+                    {{ log.msg }}
                 </li>
             </ul>
         </div>
