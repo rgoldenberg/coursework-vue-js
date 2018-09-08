@@ -58,7 +58,7 @@ new Vue({
 
             this.turnLogs.unshift({
                 id: this.turnLogs.length,
-                isPlayer: true,
+                isPlayer: false,
                 msg: `Monster hits Player for ${dmg}.`
             });
 
