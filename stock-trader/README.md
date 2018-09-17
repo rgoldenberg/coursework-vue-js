@@ -1,8 +1,6 @@
 # stock-trader
 ### Buy low, sell high!
 
->A Vue.js/vue-cli project
-
 ## Build Setup
 
 ``` bash
