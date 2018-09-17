@@ -2,7 +2,7 @@
 
 
 #### Vue.js is much better than React!
-> Albert Einsten
+> Albert Einstein
 
 ## Build Setup
 
