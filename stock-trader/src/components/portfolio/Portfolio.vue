@@ -1,9 +1,12 @@
 <template>
-    <div>
+    <div v-if="stocks.length > 0">
         <app-stock 
             v-for="stock in stocks"
             :key="stock.id"
             :stock="stock"></app-stock>
+    </div>
+    <div v-else>
+        <h4>You have no Stocks in your Portfolio at the moment.</h4>
     </div>
 </template>
 
